@@ -1,10 +1,24 @@
 import { useState } from "react";
 
-export default function ThoughtCloud({ children, onClick, isCustom, style: extraStyle }) {
+// Single continuous bezier path — no overlapping shapes
+const CLOUD_PATH = `
+  M 68 110
+  C 30 110, 28 75, 52 62
+  C 38 40, 58 18, 88 24
+  C 98 8, 128 2, 152 14
+  C 170 4, 205 8, 218 30
+  C 245 28, 262 50, 252 72
+  C 268 88, 258 112, 230 114
+  C 230 114, 68 114, 68 110
+  Z
+`;
+
+export default function ThoughtCloud({ children, onClick, isCustom }) {
   const [hovered, setHovered] = useState(false);
 
-  const fill = isCustom ? "rgba(255,255,255,0.95)" : "none";
-  const stroke = hovered ? "rgba(74,158,255,0.8)" : "rgba(255,255,255,0.35)";
+  const fill   = isCustom ? "var(--surface-cloud-custom)" : "var(--surface-cloud-default)";
+  const stroke = hovered  ? "var(--accent-primary)"       : "var(--cloud-stroke)";
+  const sw     = hovered  ? 3 : 2.5;
 
   return (
     <div
@@ -12,14 +26,26 @@ export default function ThoughtCloud({ children, onClick, isCustom, style: extra
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       className="cloud"
-      style={extraStyle}
     >
-      <svg viewBox="0 0 260 140" width="100%" height="100%" className="cloud__svg">
-        <ellipse cx="130" cy="60" rx="120" ry="50" fill={fill} stroke={stroke} strokeWidth="2"/>
-        <ellipse cx="55" cy="105" rx="30" ry="18" fill={fill} stroke={stroke} strokeWidth="1.5"/>
-        <ellipse cx="200" cy="108" rx="25" ry="15" fill={fill} stroke={stroke} strokeWidth="1.5"/>
-        <circle cx="35" cy="125" r="8" fill={fill} stroke={stroke} strokeWidth="1.5"/>
-        <circle cx="218" cy="128" r="6" fill={fill} stroke={stroke} strokeWidth="1.5"/>
+      <svg
+        viewBox="0 0 280 160"
+        width="100%"
+        height="100%"
+        className="cloud__svg"
+      >
+        {/* Main cloud body */}
+        <path
+          d={CLOUD_PATH}
+          fill={fill}
+          stroke={stroke}
+          strokeWidth={sw}
+          strokeLinejoin="round"
+        />
+        {/* Thought-tail bubbles */}
+        <ellipse cx="72" cy="128" rx="14" ry="10"
+          fill={fill} stroke={stroke} strokeWidth={sw * 0.8} />
+        <circle cx="50" cy="146" r="6"
+          fill={fill} stroke={stroke} strokeWidth={sw * 0.7} />
       </svg>
       <div className={`cloud__content ${isCustom ? "cloud__content--custom" : ""}`}>
         {children}

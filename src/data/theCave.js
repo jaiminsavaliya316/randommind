@@ -1,11 +1,6 @@
-export const DISCS = [
-  { id: "the-cave", title: "The Cave", description: "Play the mystery thriller alien game", playable: true },
-  { id: "adventure-quest", title: "Adventure Quest", description: "Embark on an epic journey full of challenges.", playable: false },
-  { id: "puzzle-mania", title: "Puzzle Mania", description: "Challenge your mind with fun puzzles.", playable: false },
-  { id: "football-frenzy", title: "Football Frenzy", description: "Join the excitement of the football world.", playable: false },
-  { id: "chess-master", title: "Chess Master", description: "Test your strategy skills in this classic game.", playable: false },
-  { id: "city-builder", title: "City Builder", description: "Create and manage your own city.", playable: false },
-];
+// ============================================================
+// Story Disc: The Cave
+// ============================================================
 
 export const THE_CAVE = {
   startScene: {
@@ -24,6 +19,16 @@ export const THE_CAVE = {
   config: {
     tone: "goofy alien mystery-thriller, non-violent",
     setting: "forest cave with quirky alien researchers",
-    totalSteps: 8
-  }
+    totalSteps: 8,
+  },
 };
+
+// All available discs (home screen grid)
+export const DISCS = [
+  { id: "the-cave",        title: "The Cave",        description: "Play the mystery thriller alien game",        playable: true  },
+  { id: "adventure-quest",  title: "Adventure Quest",  description: "Embark on an epic journey full of challenges.", playable: false },
+  { id: "puzzle-mania",     title: "Puzzle Mania",     description: "Challenge your mind with fun puzzles.",        playable: false },
+  { id: "football-frenzy",  title: "Football Frenzy",  description: "Join the excitement of the football world.",   playable: false },
+  { id: "chess-master",     title: "Chess Master",     description: "Test your strategy skills in this classic game.", playable: false },
+  { id: "city-builder",     title: "City Builder",     description: "Create and manage your own city.",             playable: false },
+];

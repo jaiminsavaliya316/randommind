@@ -37,7 +37,7 @@ export default function GameScreen({ onBack }) {
     ["C", stats.charm],
     ["L", stats.luck],
     ["C", stats.curiosity],
-    ["N", stats.nerve]
+    ["N", stats.nerve],
   ];
 
   return (
@@ -45,7 +45,9 @@ export default function GameScreen({ onBack }) {
       {/* Header */}
       <div className="game-header">
         <div className="game-header__left">
-          <button onClick={onBack} className="game-header__back">← Back</button>
+          <button onClick={onBack} className="game-header__back">
+            ← Back
+          </button>
           <span className="game-header__title">THE CAVE</span>
         </div>
         <div className="stat-row">
@@ -68,23 +70,33 @@ export default function GameScreen({ onBack }) {
                   <input
                     type="text"
                     value={customText}
-                    onChange={e => setCustomText(e.target.value)}
+                    onChange={(e) => setCustomText(e.target.value)}
                     placeholder="Type your thoughts..."
                     autoFocus
                     className="cloud__text-input"
-                    onKeyDown={e => {
-                      if (e.key === "Enter" && customText.trim()) handleChoice(customText);
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter" && customText.trim())
+                        handleChoice(customText);
                     }}
                   />
                   <div className="cloud__button-row">
                     <button
-                      onClick={() => { if (customText.trim()) handleChoice(customText); }}
+                      onClick={() => {
+                        if (customText.trim()) handleChoice(customText);
+                      }}
                       className="cloud__send-btn"
-                    >Send</button>
+                    >
+                      Send
+                    </button>
                     <button
-                      onClick={() => { setCustomExpanded(false); setCustomText(""); }}
+                      onClick={() => {
+                        setCustomExpanded(false);
+                        setCustomText("");
+                      }}
                       className="cloud__cancel-btn"
-                    >Cancel</button>
+                    >
+                      Cancel
+                    </button>
                   </div>
                 </div>
               </ThoughtCloud>
@@ -100,7 +112,9 @@ export default function GameScreen({ onBack }) {
               ))}
               <div className="game__cloud-item">
                 <ThoughtCloud isCustom onClick={() => setCustomExpanded(true)}>
-                  <span className="cloud__placeholder">Enter your own choice...</span>
+                  <span className="cloud__placeholder">
+                    Enter your own choice...
+                  </span>
                 </ThoughtCloud>
               </div>
             </>
