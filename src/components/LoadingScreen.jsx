@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import StatIcon from "./StatIcon";
 
-export default function LoadingScreen({ discTitle }) {
+export default function LoadingScreen({ discTitle, stats }) {
   const [dots, setDots] = useState("");
 
   useEffect(() => {
@@ -16,8 +16,8 @@ export default function LoadingScreen({ discTitle }) {
       <div className="game-header--no-bg">
         <span className="game-header__title">{discTitle}</span>
         <div className="stat-row">
-          {["W", "C", "L", "C", "N"].map((l, i) => (
-            <StatIcon key={i} letter={l} value={50} />
+          {(stats ?? [["W",50],["C",50],["L",50],["C",50],["N",50]]).map(([l, v], i) => (
+            <StatIcon key={i} letter={l} value={v} />
           ))}
         </div>
       </div>

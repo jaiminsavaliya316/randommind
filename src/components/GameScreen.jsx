@@ -1,36 +1,24 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
+import { useGameState } from "../hooks/useGameState";
 import { THE_CAVE } from "../data/theCave";
 import StatIcon from "./StatIcon";
 import ThoughtCloud from "./ThoughtCloud";
 import LoadingScreen from "./LoadingScreen";
+import EndingScreen from "./EndingScreen";
 
 export default function GameScreen({ onBack }) {
-  const [step, setStep] = useState(0);
-  const [isLoading, setIsLoading] = useState(true);
-  const [stats, setStats] = useState({
-    wit: 50, charm: 50, luck: 50, curiosity: 50, nerve: 50
-  });
+  const {
+    stats,
+    gamePhase,
+    isLoading,
+    currentScene,
+    endingKey,
+    selectChoice,
+    restartGame,
+  } = useGameState();
+
   const [customExpanded, setCustomExpanded] = useState(false);
   const [customText, setCustomText] = useState("");
-
-  const scene = THE_CAVE.startScene;
-
-  useEffect(() => {
-    const t = setTimeout(() => setIsLoading(false), 2000);
-    return () => clearTimeout(t);
-  }, []);
-
-  if (isLoading) return <LoadingScreen discTitle="THE CAVE" />;
-
-  const handleChoice = (choiceText) => {
-    setCustomExpanded(false);
-    setCustomText("");
-    setIsLoading(true);
-    setTimeout(() => {
-      // Phase 2+: advance step and load next scene
-      setIsLoading(false);
-    }, 1500);
-  };
 
   const statEntries = [
     ["W", stats.wit],
@@ -39,6 +27,25 @@ export default function GameScreen({ onBack }) {
     ["C", stats.curiosity],
     ["N", stats.nerve],
   ];
+
+  const handleChoice = (choiceText) => {
+    setCustomExpanded(false);
+    setCustomText("");
+    selectChoice(choiceText);
+  };
+
+  if (isLoading) return <LoadingScreen discTitle="THE CAVE" stats={statEntries} />;
+
+  if (gamePhase === "ending") {
+    const ending = THE_CAVE.endings[endingKey];
+    return (
+      <EndingScreen
+        ending={ending}
+        onPlayAgain={restartGame}
+        onBack={onBack}
+      />
+    );
+  }
 
   return (
     <div className="page-game">
@@ -59,7 +66,7 @@ export default function GameScreen({ onBack }) {
 
       {/* Story body */}
       <div className="game__body">
-        <div className="game__story-text">{scene.text}</div>
+        <div className="game__story-text">{currentScene.text}</div>
 
         {/* Thought Clouds */}
         <div className="game__clouds-row">
@@ -103,7 +110,7 @@ export default function GameScreen({ onBack }) {
             </div>
           ) : (
             <>
-              {scene.choices.map((choice, i) => (
+              {currentScene.choices.map((choice, i) => (
                 <div key={i} className="game__cloud-item">
                   <ThoughtCloud onClick={() => handleChoice(choice)}>
                     {choice}
