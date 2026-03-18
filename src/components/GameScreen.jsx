@@ -28,10 +28,10 @@ export default function GameScreen({ onBack }) {
     ["N", stats.nerve],
   ];
 
-  const handleChoice = (choiceText) => {
+  const handleChoice = (choiceText, choiceIndex) => {
     setCustomExpanded(false);
     setCustomText("");
-    selectChoice(choiceText);
+    selectChoice(choiceText, choiceIndex);
   };
 
   if (isLoading) return <LoadingScreen discTitle="THE CAVE" stats={statEntries} />;
@@ -41,6 +41,7 @@ export default function GameScreen({ onBack }) {
     return (
       <EndingScreen
         ending={ending}
+        stats={stats}
         onPlayAgain={restartGame}
         onBack={onBack}
       />
@@ -112,7 +113,7 @@ export default function GameScreen({ onBack }) {
             <>
               {currentScene.choices.map((choice, i) => (
                 <div key={i} className="game__cloud-item">
-                  <ThoughtCloud onClick={() => handleChoice(choice)}>
+                  <ThoughtCloud onClick={() => handleChoice(choice, i)}>
                     {choice}
                   </ThoughtCloud>
                 </div>

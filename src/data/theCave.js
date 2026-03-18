@@ -8,6 +8,10 @@ export const THE_CAVE = {
     choices: [
       "Squeeze through the gap into the cave",
       "Stay outside and try to find another way back"
+    ],
+    statChanges: [
+      { nerve: 10, curiosity: 5 },  // "Squeeze through the gap"
+      { luck: 10, wit: 5 }          // "Stay outside"
     ]
   },
 
@@ -19,6 +23,10 @@ export const THE_CAVE = {
       choices: [
         "Touch the holographic map",
         "Hide behind a rock and observe first"
+      ],
+      statChanges: [
+        { curiosity: 10, nerve: 5 }, // "Touch the map"
+        { wit: 10, luck: 5 }         // "Hide and observe"
       ]
     },
     {
@@ -27,6 +35,10 @@ export const THE_CAVE = {
       choices: [
         "Wave and say hello",
         "Try to slowly back away before it raises an alarm"
+      ],
+      statChanges: [
+        { charm: 10, nerve: 5 },  // "Wave and say hello"
+        { luck: 10, wit: 5 }      // "Back away"
       ]
     },
     {
@@ -35,6 +47,10 @@ export const THE_CAVE = {
       choices: [
         "Mime that you come in peace (hands up, big smile)",
         "Point at your dead phone and shrug — universal symbol for 'I'm just lost'"
+      ],
+      statChanges: [
+        { charm: 10, wit: 5 },  // "Mime peace"
+        { wit: 10, luck: 5 }    // "Point at phone"
       ]
     },
     {
@@ -43,6 +59,10 @@ export const THE_CAVE = {
       choices: [
         "Visitor! Definitely a visitor. One hundred percent visitor.",
         "...what exactly happens if I say specimen?"
+      ],
+      statChanges: [
+        { nerve: 10, charm: 5 },     // "Visitor!"
+        { wit: 10, curiosity: 5 }    // "What happens if specimen?"
       ]
     },
     {
@@ -51,6 +71,10 @@ export const THE_CAVE = {
       choices: [
         "Fill out the survey — honestly, you're curious about the crystal",
         "Politely decline and just ask for directions home"
+      ],
+      statChanges: [
+        { curiosity: 10, charm: 5 }, // "Fill out survey"
+        { charm: 10, luck: 5 }       // "Decline + ask directions"
       ]
     },
     {
@@ -59,6 +83,10 @@ export const THE_CAVE = {
       choices: [
         "Five stars — genuinely, this was the best night of your life",
         "Three stars — great aliens, but the no-signal situation was a dealbreaker"
+      ],
+      statChanges: [
+        { charm: 10, curiosity: 5 }, // "Five stars"
+        { wit: 10, nerve: 5 }        // "Three stars"
       ]
     }
   ],
