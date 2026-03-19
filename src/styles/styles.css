@@ -338,8 +338,8 @@ body {
   position: relative;
   cursor: pointer;
   transition: transform var(--transition-fast);
-  width: 280px;
-  height: 160px;
+  width: 320px;
+  height: 185px;
 }
 
 .cloud:hover {
@@ -361,8 +361,8 @@ body {
   align-items: center;
   justify-content: center;
   height: 100%;
-  padding: 0 50px 30px;
-  font-size: 13.5px;
+  padding: 0 55px 35px;
+  font-size: 14.5px;
   font-weight: 500;
   text-align: center;
   line-height: 1.5;
@@ -465,6 +465,41 @@ body {
   padding: var(--space-2xl) 28px var(--space-xl);
 }
 
+/* Story text animations */
+@keyframes story-enter {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes story-exit {
+  from { opacity: 1; transform: translateY(0); }
+  to   { opacity: 0; transform: translateY(-22px); }
+}
+
+/* Cloud row animations */
+@keyframes clouds-enter {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes clouds-exit {
+  from { opacity: 1; transform: translateY(0); }
+  to   { opacity: 0; transform: translateY(10px); }
+}
+
+/* Selected cloud: float up and dissolve */
+@keyframes cloud-float-up {
+  0%   { opacity: 1;   transform: scale(1.06); filter: drop-shadow(0 0 6px rgba(123,150,105,0.6)); }
+  30%  { opacity: 0.9; transform: scale(1.06) translateY(-12px); }
+  100% { opacity: 0;   transform: scale(0.95) translateY(-55px); }
+}
+
+/* Unchosen clouds: fade and sink */
+@keyframes cloud-fade-down {
+  from { opacity: 1; transform: translateY(0); }
+  to   { opacity: 0; transform: translateY(10px); }
+}
+
 .game__story-text {
   font-size: 15.5px;
   line-height: 1.85;
@@ -472,6 +507,13 @@ body {
   max-width: 800px;
   margin: 0 auto;
   white-space: pre-line;
+  min-height: 80px;
+  animation: story-enter 0.45s ease both;
+}
+
+.game__story-text--exiting {
+  animation: story-exit 0.35s ease forwards;
+  pointer-events: none;
 }
 
 .game__clouds-row {
@@ -481,10 +523,59 @@ body {
   margin-top: var(--space-3xl);
   padding-bottom: var(--space-lg);
   flex-wrap: wrap;
+  animation: clouds-enter 0.45s ease 0.1s both;
+}
+
+.game__clouds-row--exiting {
+  animation: clouds-exit 0.3s ease forwards;
+  pointer-events: none;
+}
+
+/* Cloud exit states */
+.cloud--selected {
+  animation: cloud-float-up 0.55s ease forwards;
+  pointer-events: none;
+}
+
+.cloud--exit {
+  animation: cloud-fade-down 0.3s ease forwards;
+  pointer-events: none;
 }
 
 .game__cloud-item {
-  width: 280px;
+  width: 320px;
+}
+
+/* Wide custom input expansion */
+.cloud__expanded-wide {
+  width: min(720px, 85vw);
+  background: var(--surface-cloud-custom);
+  border-radius: 40px;
+  border: 2.5px solid var(--cloud-stroke);
+  padding: 28px 36px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.12);
+}
+
+.cloud__wide-input {
+  width: 100%;
+  background: transparent;
+  border: none;
+  border-bottom: 1.5px solid var(--accent-primary);
+  outline: none;
+  font-size: 16px;
+  color: var(--text-primary);
+  padding: 8px 4px;
+  text-align: center;
+  font-family: var(--font-primary);
+}
+
+.cloud__wide-input::placeholder {
+  color: var(--text-dim);
+  font-style: italic;
 }
 
 /* ============================================================
