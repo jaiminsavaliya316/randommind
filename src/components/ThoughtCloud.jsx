@@ -13,7 +13,7 @@ const CLOUD_PATH = `
   Z
 `;
 
-export default function ThoughtCloud({ children, onClick, isCustom }) {
+export default function ThoughtCloud({ children, onClick, isCustom, animClass = "" }) {
   const [hovered, setHovered] = useState(false);
 
   const fill   = isCustom ? "var(--surface-cloud-custom)" : "var(--surface-cloud-default)";
@@ -25,7 +25,7 @@ export default function ThoughtCloud({ children, onClick, isCustom }) {
       onClick={onClick}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
-      className="cloud"
+      className={`cloud ${animClass}`}
     >
       <svg
         viewBox="0 0 280 160"

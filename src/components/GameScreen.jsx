@@ -1,36 +1,27 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
+import { useGameState } from "../hooks/useGameState";
 import { THE_CAVE } from "../data/theCave";
 import StatIcon from "./StatIcon";
 import ThoughtCloud from "./ThoughtCloud";
 import LoadingScreen from "./LoadingScreen";
+import EndingScreen from "./EndingScreen";
 
 export default function GameScreen({ onBack }) {
-  const [step, setStep] = useState(0);
-  const [isLoading, setIsLoading] = useState(true);
-  const [stats, setStats] = useState({
-    wit: 50, charm: 50, luck: 50, curiosity: 50, nerve: 50
-  });
+  const {
+    step,
+    stats,
+    choiceHistory,
+    gamePhase,
+    isLoading,
+    currentScene,
+    endingKey,
+    selectChoice,
+    restartGame,
+  } = useGameState();
+
   const [customExpanded, setCustomExpanded] = useState(false);
   const [customText, setCustomText] = useState("");
-
-  const scene = THE_CAVE.startScene;
-
-  useEffect(() => {
-    const t = setTimeout(() => setIsLoading(false), 2000);
-    return () => clearTimeout(t);
-  }, []);
-
-  if (isLoading) return <LoadingScreen discTitle="THE CAVE" />;
-
-  const handleChoice = (choiceText) => {
-    setCustomExpanded(false);
-    setCustomText("");
-    setIsLoading(true);
-    setTimeout(() => {
-      // Phase 2+: advance step and load next scene
-      setIsLoading(false);
-    }, 1500);
-  };
+  const [selectedCloudIndex, setSelectedCloudIndex] = useState(null);
 
   const statEntries = [
     ["W", stats.wit],
@@ -39,6 +30,35 @@ export default function GameScreen({ onBack }) {
     ["C", stats.curiosity],
     ["N", stats.nerve],
   ];
+
+  const handleChoice = (choiceText, choiceIndex) => {
+    setSelectedCloudIndex(choiceIndex ?? "custom");
+    setCustomExpanded(false);
+    setCustomText("");
+    selectChoice(choiceText, choiceIndex);
+  };
+
+  const midGameLoading = isLoading && choiceHistory.length > 0;
+
+  const cloudAnimClass = (i) => {
+    if (!midGameLoading) return "";
+    return i === selectedCloudIndex ? "cloud--selected" : "cloud--exit";
+  };
+
+  // Full loading screen only on initial game entry (no choice made yet)
+  if (isLoading && choiceHistory.length === 0) return <LoadingScreen discTitle="THE CAVE" stats={statEntries} />;
+
+  if (gamePhase === "ending") {
+    const ending = THE_CAVE.endings[endingKey];
+    return (
+      <EndingScreen
+        ending={ending}
+        stats={stats}
+        onPlayAgain={restartGame}
+        onBack={onBack}
+      />
+    );
+  }
 
   return (
     <div className="page-game">
@@ -59,59 +79,70 @@ export default function GameScreen({ onBack }) {
 
       {/* Story body */}
       <div className="game__body">
-        <div className="game__story-text">{scene.text}</div>
+        <div
+          key={step}
+          className={`game__story-text ${midGameLoading ? "game__story-text--exiting" : ""}`}
+        >
+          {currentScene.text}
+        </div>
 
         {/* Thought Clouds */}
-        <div className="game__clouds-row">
+        <div
+          key={`clouds-${step}`}
+          className={`game__clouds-row ${midGameLoading ? "game__clouds-row--exiting" : ""}`}
+        >
           {customExpanded ? (
-            <div className="cloud__expanded">
-              <ThoughtCloud isCustom>
-                <div className="cloud__input-row">
-                  <input
-                    type="text"
-                    value={customText}
-                    onChange={(e) => setCustomText(e.target.value)}
-                    placeholder="Type your thoughts..."
-                    autoFocus
-                    className="cloud__text-input"
-                    onKeyDown={(e) => {
-                      if (e.key === "Enter" && customText.trim())
-                        handleChoice(customText);
-                    }}
-                  />
-                  <div className="cloud__button-row">
-                    <button
-                      onClick={() => {
-                        if (customText.trim()) handleChoice(customText);
-                      }}
-                      className="cloud__send-btn"
-                    >
-                      Send
-                    </button>
-                    <button
-                      onClick={() => {
-                        setCustomExpanded(false);
-                        setCustomText("");
-                      }}
-                      className="cloud__cancel-btn"
-                    >
-                      Cancel
-                    </button>
-                  </div>
-                </div>
-              </ThoughtCloud>
+            <div className="cloud__expanded-wide">
+              <input
+                type="text"
+                value={customText}
+                onChange={(e) => setCustomText(e.target.value)}
+                placeholder="Type your thoughts..."
+                autoFocus
+                className="cloud__wide-input"
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" && customText.trim())
+                    handleChoice(customText);
+                }}
+              />
+              <div className="cloud__button-row">
+                <button
+                  onClick={() => {
+                    if (customText.trim()) handleChoice(customText);
+                  }}
+                  className="cloud__send-btn"
+                >
+                  Send
+                </button>
+                <button
+                  onClick={() => {
+                    setCustomExpanded(false);
+                    setCustomText("");
+                  }}
+                  className="cloud__cancel-btn"
+                >
+                  Cancel
+                </button>
+              </div>
             </div>
           ) : (
             <>
-              {scene.choices.map((choice, i) => (
+              {currentScene.choices.map((choice, i) => (
                 <div key={i} className="game__cloud-item">
-                  <ThoughtCloud onClick={() => handleChoice(choice)}>
+                  <ThoughtCloud
+                    animClass={cloudAnimClass(i)}
+                    onClick={() => handleChoice(choice, i)}
+                  >
                     {choice}
                   </ThoughtCloud>
                 </div>
               ))}
               <div className="game__cloud-item">
-                <ThoughtCloud isCustom onClick={() => setCustomExpanded(true)}>
+                <ThoughtCloud
+                  isCustom
+                  animClass={cloudAnimClass("custom")}
+                  onClick={() => setCustomExpanded(true)}
+                >
                   <span className="cloud__placeholder">
                     Enter your own choice...
                   </span>
