@@ -2,11 +2,11 @@ import { useState, useEffect } from "react";
 import { THE_CAVE } from "../data/theCave";
 import { resolveStatChanges } from "../services/statResolver";
 
-const INITIAL_STATS = { wit: 50, charm: 50, luck: 50, curiosity: 50, nerve: 50 };
+const INITIAL_STATS = { wit: 50, charm: 50, luck: 50, excitement: 50, nerve: 50 };
 
 const STAT_TO_ENDING = {
   charm: "diplomat",
-  curiosity: "scholar",
+  excitement: "scholar",
   nerve: "survivor",
   wit: "trickster",
   luck: "survivor", // luck has no dedicated ending; resolves to survivor

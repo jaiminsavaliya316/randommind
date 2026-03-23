@@ -27,7 +27,7 @@ export default function GameScreen({ onBack }) {
     ["W", stats.wit],
     ["C", stats.charm],
     ["L", stats.luck],
-    ["C", stats.curiosity],
+    ["E", stats.excitement],
     ["N", stats.nerve],
   ];
 
@@ -64,12 +64,10 @@ export default function GameScreen({ onBack }) {
     <div className="page-game">
       {/* Header */}
       <div className="game-header">
-        <div className="game-header__left">
-          <button onClick={onBack} className="game-header__back">
-            ← Back
-          </button>
-          <span className="game-header__title">THE CAVE</span>
-        </div>
+        <button onClick={onBack} className="game-header__back" data-tooltip="Home">
+          ← Back
+        </button>
+        <span className="game-header__title">THE CAVE</span>
         <div className="stat-row">
           {statEntries.map(([l, v], i) => (
             <StatIcon key={i} letter={l} value={v} />

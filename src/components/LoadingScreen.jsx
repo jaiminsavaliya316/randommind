@@ -14,9 +14,10 @@ export default function LoadingScreen({ discTitle, stats }) {
   return (
     <div className="page-loading">
       <div className="game-header--no-bg">
+        <div />
         <span className="game-header__title">{discTitle}</span>
         <div className="stat-row">
-          {(stats ?? [["W",50],["C",50],["L",50],["C",50],["N",50]]).map(([l, v], i) => (
+          {(stats ?? [["W",50],["C",50],["L",50],["E",50],["N",50]]).map(([l, v], i) => (
             <StatIcon key={i} letter={l} value={v} />
           ))}
         </div>

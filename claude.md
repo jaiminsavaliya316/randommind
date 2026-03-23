@@ -1,5 +1,13 @@
 # RandomMind – React Prototype Build Plan
 
+[SECTION_IGNORE]
+Thing I want to do (Do not impliment it yet, Only for human):
+- Bug: Disks list is in theCave.js. It should not be there
+- Do I want to remove the extra circles from below the cloud?
+- GameCard calls onSelect(disc.id), passing the id as an argument, but the parent function () => setScreen("playing") ignores it completely. The disc.id gets passed but nobody's listening.
+- Think about the Guardrails to avoid gooing way out of context when user enters a custom choice
+[/SECTION_IGNORE]
+
 ## Architecture Overview
 
 ```

@@ -10,7 +10,7 @@ export const THE_CAVE = {
       "Stay outside and try to find another way back"
     ],
     statChanges: [
-      { nerve: 10, curiosity: 5 },  // "Squeeze through the gap"
+      { nerve: 10, excitement: 5 },  // "Squeeze through the gap"
       { luck: 10, wit: 5 }          // "Stay outside"
     ]
   },
@@ -25,7 +25,7 @@ export const THE_CAVE = {
         "Hide behind a rock and observe first"
       ],
       statChanges: [
-        { curiosity: 10, nerve: 5 }, // "Touch the map"
+        { excitement: 10, nerve: 5 }, // "Touch the map"
         { wit: 10, luck: 5 }         // "Hide and observe"
       ]
     },
@@ -62,7 +62,7 @@ export const THE_CAVE = {
       ],
       statChanges: [
         { nerve: 10, charm: 5 },     // "Visitor!"
-        { wit: 10, curiosity: 5 }    // "What happens if specimen?"
+        { wit: 10, excitement: 5 }    // "What happens if specimen?"
       ]
     },
     {
@@ -73,7 +73,7 @@ export const THE_CAVE = {
         "Politely decline and just ask for directions home"
       ],
       statChanges: [
-        { curiosity: 10, charm: 5 }, // "Fill out survey"
+        { excitement: 10, charm: 5 }, // "Fill out survey"
         { charm: 10, luck: 5 }       // "Decline + ask directions"
       ]
     },
@@ -85,7 +85,7 @@ export const THE_CAVE = {
         "Three stars — great aliens, but the no-signal situation was a dealbreaker"
       ],
       statChanges: [
-        { charm: 10, curiosity: 5 }, // "Five stars"
+        { charm: 10, excitement: 5 }, // "Five stars"
         { wit: 10, nerve: 5 }        // "Three stars"
       ]
     }
@@ -98,7 +98,7 @@ export const THE_CAVE = {
       text: "Word spread through the alien base before you even reached the exit: the human is friendly. Unusually friendly, even by their own research standards.\n\nBefore you stepped into the dawn light, the head researcher pressed a laminated card into your hands. It had your name on it — spelled slightly wrong, but close — and the words 'GALACTIC FIELD RESEARCH INSTITUTE — ASSOCIATE MEMBER' printed in seven languages, only one of which you could read.\n\nYou made it back to camp in time for breakfast. You still have the card. You keep it in your wallet, behind your library card. No one knows it's there, but you do."
     },
     scholar: {
-      minStat: "curiosity", threshold: 70,
+      minStat: "excitement", threshold: 70,
       title: "Co-Author",
       text: "You filled out the survey. Then a follow-up survey. Then what turned out to be an exit interview, a supplemental questionnaire, and a brief oral examination on the migratory patterns of songbirds (you guessed).\n\nSomewhere in the process, you accidentally co-authored a paper on human decision-making under conditions of extraterrestrial ambiguity. Your contribution is listed in the acknowledgements as 'HELPFUL SPECIMEN (NON-CONSENTING CATEGORY: VISITOR).'\n\nThe paper will be published in a peer-reviewed journal 40 light-years from here. You'll never see it. But on the hike back to camp, you felt, for the first time in years, genuinely intellectually satisfied."
     },
