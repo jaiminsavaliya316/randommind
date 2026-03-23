@@ -2,7 +2,7 @@ const STAT_LABELS = [
   { key: "wit",       letter: "W", label: "Wit" },
   { key: "charm",     letter: "C", label: "Charm" },
   { key: "luck",      letter: "L", label: "Luck" },
-  { key: "curiosity", letter: "C", label: "Curiosity" },
+  { key: "excitement", letter: "E", label: "Excitement" },
   { key: "nerve",     letter: "N", label: "Nerve" },
 ];
 
