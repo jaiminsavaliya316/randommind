@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { THE_CAVE } from "../data/theCave";
 import { resolveStatChanges } from "../services/statResolver";
 
 const INITIAL_STATS = { wit: 50, charm: 50, luck: 50, excitement: 50, nerve: 50 };
@@ -12,9 +11,9 @@ const STAT_TO_ENDING = {
   luck: "survivor", // luck has no dedicated ending; resolves to survivor
 };
 
-function getScene(step) {
-  if (step === 0) return THE_CAVE.startScene;
-  return THE_CAVE.scenes[step - 1];
+function getScene(story, step) {
+  if (step === 0) return story.startScene;
+  return story.scenes[step - 1];
 }
 
 function applyDeltas(currentStats, deltas) {
@@ -43,7 +42,7 @@ function resolveEndingKey(stats, choiceHistory) {
   return STAT_TO_ENDING[[...tied].sort()[0]];
 }
 
-export function useGameState() {
+export function useGameState(story) {
   const [step, setStep] = useState(0);
   const [stats, setStats] = useState(INITIAL_STATS);
   const [choiceHistory, setChoiceHistory] = useState([]);
@@ -57,7 +56,7 @@ export function useGameState() {
     return () => clearTimeout(t);
   }, []);
 
-  const currentScene = gamePhase === "playing" ? getScene(step) : null;
+  const currentScene = gamePhase === "playing" ? getScene(story, step) : null;
 
   // NOTE for Phase 4: add `async` here and `await` before resolveStatChanges(...)
   const selectChoice = (choiceText, choiceIndex) => {
@@ -78,7 +77,7 @@ export function useGameState() {
     setIsLoading(true);
     setTimeout(() => {
       const nextStep = step + 1;
-      if (nextStep > THE_CAVE.scenes.length) {
+      if (nextStep > story.scenes.length) {
         // Use nextStats/nextHistory (not state refs) to avoid stale closure
         setEndingKey(resolveEndingKey(nextStats, nextHistory));
         setGamePhase("ending");

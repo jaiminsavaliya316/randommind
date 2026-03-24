@@ -1,4 +1,4 @@
-import { DISCS } from "../data/theCave";
+import { DISCS } from "../data/discs";
 import GameCard from "./GameCard";
 
 export default function HomeScreen({ onSelectDisc }) {

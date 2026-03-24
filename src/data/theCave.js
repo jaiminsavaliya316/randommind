@@ -118,15 +118,24 @@ export const THE_CAVE = {
     tone: "goofy alien mystery-thriller, non-violent",
     setting: "forest cave with quirky alien researchers",
     totalSteps: 7, // step 0 (start) + steps 1–6 (middle); ending triggers after step 6
+
+    // Phase 4: included in every AI scene-generation system prompt
+    systemPromptBase: "You are the narrator of a goofy, non-violent alien mystery-thriller. The story takes place inside a forest cave that alien researchers are secretly using as a research base. Keep the tone light and comedic. Never introduce violence or horror.",
+
+    // Phase 4: appended to system prompt when the player uses the custom input cloud
+    customInputFraming: "The player has typed a custom action. Interpret it charitably as something a person might realistically attempt in this setting, even if the literal words seem unusual or out of place. Do not reject the premise — find a creative way to make it fit the story world.",
+
+    // Phase 4: soft checkpoints — inject a "must include" constraint at specific steps
+    // These are not hard resets; they ensure canonical story elements reappear if the story drifted
+    softCheckpoints: [
+      {
+        atStep: 3,
+        mustInclude: "the alien research team and their unusual equipment",
+      },
+      {
+        atStep: 5,
+        mustInclude: "the alien cave setting, at least one researcher, and a visible path toward the exit",
+      },
+    ],
   },
 };
-
-// All available discs (home screen grid)
-export const DISCS = [
-  { id: "the-cave",        title: "The Cave",        description: "Play the mystery thriller alien game",        playable: true  },
-  { id: "adventure-quest",  title: "Adventure Quest",  description: "Embark on an epic journey full of challenges.", playable: false },
-  { id: "puzzle-mania",     title: "Puzzle Mania",     description: "Challenge your mind with fun puzzles.",        playable: false },
-  { id: "football-frenzy",  title: "Football Frenzy",  description: "Join the excitement of the football world.",   playable: false },
-  { id: "chess-master",     title: "Chess Master",     description: "Test your strategy skills in this classic game.", playable: false },
-  { id: "city-builder",     title: "City Builder",     description: "Create and manage your own city.",             playable: false },
-];

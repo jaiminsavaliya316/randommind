@@ -1,12 +1,13 @@
 import { useState } from "react";
 import { useGameState } from "../hooks/useGameState";
-import { THE_CAVE } from "../data/theCave";
+import { STORY_MAP } from "../data/discs";
 import StatIcon from "./StatIcon";
 import ThoughtCloud from "./ThoughtCloud";
 import LoadingScreen from "./LoadingScreen";
 import EndingScreen from "./EndingScreen";
 
-export default function GameScreen({ onBack }) {
+export default function GameScreen({ discId, onBack }) {
+  const story = STORY_MAP[discId];
   const {
     step,
     stats,
@@ -17,7 +18,7 @@ export default function GameScreen({ onBack }) {
     endingKey,
     selectChoice,
     restartGame,
-  } = useGameState();
+  } = useGameState(story);
 
   const [customExpanded, setCustomExpanded] = useState(false);
   const [customText, setCustomText] = useState("");
@@ -46,10 +47,10 @@ export default function GameScreen({ onBack }) {
   };
 
   // Full loading screen only on initial game entry (no choice made yet)
-  if (isLoading && choiceHistory.length === 0) return <LoadingScreen discTitle="THE CAVE" stats={statEntries} />;
+  if (isLoading && choiceHistory.length === 0) return <LoadingScreen discTitle={story.config.title ?? discId} stats={statEntries} />;
 
   if (gamePhase === "ending") {
-    const ending = THE_CAVE.endings[endingKey];
+    const ending = story.endings[endingKey];
     return (
       <EndingScreen
         ending={ending}
