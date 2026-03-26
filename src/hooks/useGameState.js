@@ -8,13 +8,8 @@ const STAT_TO_ENDING = {
   excitement: "scholar",
   nerve: "survivor",
   wit: "trickster",
-  luck: "survivor", // luck has no dedicated ending; resolves to survivor
+  luck: "survivor",
 };
-
-function getScene(story, step) {
-  if (step === 0) return story.startScene;
-  return story.scenes[step - 1];
-}
 
 function applyDeltas(currentStats, deltas) {
   const next = { ...currentStats };
@@ -32,13 +27,11 @@ function resolveEndingKey(stats, choiceHistory) {
 
   if (tied.length === 1) return STAT_TO_ENDING[tied[0]];
 
-  // Tiebreak: scan choiceHistory from last to first — most recently changed stat wins
   for (let i = choiceHistory.length - 1; i >= 0; i--) {
     const hit = Object.keys(choiceHistory[i].statChanges || {}).find((k) => tied.includes(k));
     if (hit) return STAT_TO_ENDING[hit];
   }
 
-  // Final fallback: first tied stat alphabetically
   return STAT_TO_ENDING[[...tied].sort()[0]];
 }
 
@@ -46,25 +39,29 @@ export function useGameState(story) {
   const [step, setStep] = useState(0);
   const [stats, setStats] = useState(INITIAL_STATS);
   const [choiceHistory, setChoiceHistory] = useState([]);
-  const [gamePhase, setGamePhase] = useState("playing"); // "playing" | "ending"
+  const [gamePhase, setGamePhase] = useState("playing");
   const [isLoading, setIsLoading] = useState(true);
   const [endingKey, setEndingKey] = useState(null);
+  const [currentScene, setCurrentScene] = useState(story.startScene);
 
-  // Initial load delay
+  // Initial load delay (entry from home screen)
   useEffect(() => {
     const t = setTimeout(() => setIsLoading(false), 2000);
     return () => clearTimeout(t);
   }, []);
 
-  const currentScene = gamePhase === "playing" ? getScene(story, step) : null;
+  const selectChoice = async (choiceText, choiceIndex) => {
+    setIsLoading(true);
 
-  // NOTE for Phase 4: add `async` here and `await` before resolveStatChanges(...)
-  const selectChoice = (choiceText, choiceIndex) => {
-    const deltas = resolveStatChanges({
+    const { deltas, nextScene } = await resolveStatChanges({
       scene: currentScene,
       choiceText,
       choiceIndex,
       statNames: Object.keys(INITIAL_STATS),
+      choiceHistory,
+      step,
+      story,
+      stats,
     });
 
     const nextStats = applyDeltas(stats, deltas);
@@ -74,18 +71,16 @@ export function useGameState(story) {
     const nextHistory = [...choiceHistory, entry];
     setChoiceHistory(nextHistory);
 
-    setIsLoading(true);
-    setTimeout(() => {
-      const nextStep = step + 1;
-      if (nextStep > story.scenes.length) {
-        // Use nextStats/nextHistory (not state refs) to avoid stale closure
-        setEndingKey(resolveEndingKey(nextStats, nextHistory));
-        setGamePhase("ending");
-      } else {
-        setStep(nextStep);
-      }
-      setIsLoading(false);
-    }, 1500);
+    const nextStep = step + 1;
+    if (nextStep > story.scenes.length) {
+      setEndingKey(resolveEndingKey(nextStats, nextHistory));
+      setGamePhase("ending");
+    } else {
+      setCurrentScene(nextScene);
+      setStep(nextStep);
+    }
+
+    setIsLoading(false);
   };
 
   const restartGame = () => {
@@ -94,6 +89,7 @@ export function useGameState(story) {
     setChoiceHistory([]);
     setGamePhase("playing");
     setEndingKey(null);
+    setCurrentScene(story.startScene);
     setIsLoading(true);
     setTimeout(() => setIsLoading(false), 2000);
   };
