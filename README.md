@@ -43,7 +43,6 @@ Create a `.env` file in the project root with the following:
 VITE_NVIDIA_API_KEY=nvapi-xxxxxxxxxxxxxxxxxxxxxxxxxxxx
 VITE_NVIDIA_API_BASE_URL=https://integrate.api.nvidia.com/v1
 VITE_NVIDIA_MODEL_NAME=nvidia/nemotron-mini-4b-instruct
-VITE_ENABLE_LOGGING=true
 ```
 
 | Variable | Required | Description |
@@ -51,7 +50,6 @@ VITE_ENABLE_LOGGING=true
 | `VITE_NVIDIA_API_KEY` | Yes | Your NVIDIA NIM API key |
 | `VITE_NVIDIA_API_BASE_URL` | Yes | NVIDIA NIM base URL (don't change this) |
 | `VITE_NVIDIA_MODEL_NAME` | Yes | Model ID from build.nvidia.com |
-| `VITE_ENABLE_LOGGING` | No | Set to `true` to download a JSON log file at game end. Omit or set to `false` for testers/players. |
 
 > **Never commit your `.env` file.** It is listed in `.gitignore` by default.
 
