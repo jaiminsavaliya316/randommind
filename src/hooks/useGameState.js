@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { resolveStatChanges } from "../services/statResolver";
+import { startSession, downloadLogs } from "../services/logger";
 
 const INITIAL_STATS = { wit: 50, charm: 50, luck: 50, excitement: 50, nerve: 50 };
 
@@ -39,6 +40,7 @@ export function useGameState(story) {
   const [step, setStep] = useState(0);
   const [stats, setStats] = useState(INITIAL_STATS);
   const [choiceHistory, setChoiceHistory] = useState([]);
+  const [storySummary, setStorySummary] = useState(null);
   const [gamePhase, setGamePhase] = useState("playing");
   const [isLoading, setIsLoading] = useState(true);
   const [endingKey, setEndingKey] = useState(null);
@@ -46,6 +48,7 @@ export function useGameState(story) {
 
   // Initial load delay (entry from home screen)
   useEffect(() => {
+    startSession();
     const t = setTimeout(() => setIsLoading(false), 2000);
     return () => clearTimeout(t);
   }, []);
@@ -53,16 +56,17 @@ export function useGameState(story) {
   const selectChoice = async (choiceText, choiceIndex) => {
     setIsLoading(true);
 
-    const { deltas, nextScene } = await resolveStatChanges({
+    const { deltas, nextScene, storySummary: newSummary } = await resolveStatChanges({
       scene: currentScene,
       choiceText,
       choiceIndex,
-      statNames: Object.keys(INITIAL_STATS),
-      choiceHistory,
+      storySummary,
       step,
       story,
       stats,
     });
+
+    if (newSummary) setStorySummary(newSummary);
 
     const nextStats = applyDeltas(stats, deltas);
     setStats(nextStats);
@@ -73,6 +77,7 @@ export function useGameState(story) {
 
     const nextStep = step + 1;
     if (nextStep > story.scenes.length) {
+      downloadLogs();
       setEndingKey(resolveEndingKey(nextStats, nextHistory));
       setGamePhase("ending");
     } else {
@@ -84,9 +89,11 @@ export function useGameState(story) {
   };
 
   const restartGame = () => {
+    startSession();
     setStep(0);
     setStats(INITIAL_STATS);
     setChoiceHistory([]);
+    setStorySummary(null);
     setGamePhase("playing");
     setEndingKey(null);
     setCurrentScene(story.startScene);

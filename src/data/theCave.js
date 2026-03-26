@@ -88,6 +88,30 @@ export const THE_CAVE = {
         { charm: 10, excitement: 5 }, // "Five stars"
         { wit: 10, nerve: 5 }        // "Three stars"
       ]
+    },
+    {
+      // Step 7
+      text: "The aliens form a surprisingly orderly send-off line. One by one they present you with small laminated cards — each one a different colour, each one stamped with a symbol you don't recognize. The head researcher produces a miniature loudspeaker and announces something in rapid honking tones. The others respond with a synchronized kazoo sound.\n\nYou gather it's a farewell ceremony. You're fairly sure you just got a standing ovation from seven potato-shaped extraterrestrials.",
+      choices: [
+        "Take a small bow — when in Rome",
+        "Wave enthusiastically and back toward the exit tunnel"
+      ],
+      statChanges: [
+        { charm: 10, wit: 5 },      // "Take a bow"
+        { nerve: 10, luck: 5 }      // "Wave and back away"
+      ]
+    },
+    {
+      // Step 8
+      text: "The exit tunnel narrows to a tight squeeze, exactly like the entrance. Dawn light pours through the gap, warm and impossibly ordinary after everything that just happened. You can smell pine and damp earth. Behind you, the alien base hums quietly.\n\nYou pause at the threshold. There's a small ledge to your left with something on it — the aliens must have placed it there. It looks like a parting gift.",
+      choices: [
+        "Take the gift — you've earned it",
+        "Leave it and step through — some things are better left in the cave"
+      ],
+      statChanges: [
+        { excitement: 10, luck: 5 },  // "Take the gift"
+        { nerve: 10, wit: 5 }         // "Leave it"
+      ]
     }
   ],
 
@@ -117,7 +141,7 @@ export const THE_CAVE = {
   config: {
     tone: "goofy alien mystery-thriller, non-violent",
     setting: "forest cave with quirky alien researchers",
-    totalSteps: 7, // step 0 (start) + steps 1–6 (middle); ending triggers after step 6
+    totalSteps: 9, // step 0 (start) + steps 1–8 (middle); ending triggers after step 8
 
     // Phase 4: included in every AI scene-generation system prompt
     systemPromptBase: "You are the narrator of a goofy, non-violent alien mystery-thriller. The story takes place inside a forest cave that alien researchers are secretly using as a research base. Keep the tone light and comedic. Never introduce violence or horror.",

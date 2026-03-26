@@ -29,7 +29,9 @@ randommind/
 │   ├── hooks/
 │   │   └── useGameState.js      ← Core state machine (stats, step, history)
 │   └── services/
-│       └── statResolver.js      ← Resolves stat changes from choices
+│       ├── aiService.js         ← NVIDIA NIM API calls + prompt building
+│       ├── statResolver.js      ← Resolves stat changes (AI or hardcoded fallback)
+│       └── logger.js            ← Session logger, downloads log file at game end
 ├── .env                         ← API credentials (never commit this)
 ├── .gitignore
 ├── package.json
@@ -73,7 +75,15 @@ Create a `.env` file in the project root with the following:
 VITE_NVIDIA_API_KEY=nvapi-xxxxxxxxxxxxxxxxxxxxxxxxxxxx
 VITE_NVIDIA_API_BASE_URL=https://integrate.api.nvidia.com/v1
 VITE_NVIDIA_MODEL_NAME=nvidia/nemotron-mini-4b-instruct
+VITE_ENABLE_LOGGING=true
 ```
+
+| Variable | Required | Description |
+|---|---|---|
+| `VITE_NVIDIA_API_KEY` | Yes | Your NVIDIA NIM API key |
+| `VITE_NVIDIA_API_BASE_URL` | Yes | NVIDIA NIM base URL (don't change this) |
+| `VITE_NVIDIA_MODEL_NAME` | Yes | Model ID from build.nvidia.com |
+| `VITE_ENABLE_LOGGING` | No | Set to `true` to download a JSON log file at game end. Omit or set to `false` for testers/players. |
 
 > **Never commit your `.env` file.** It is listed in `.gitignore` by default.
 
@@ -142,3 +152,37 @@ Each choice in the game affects your character's stats:
 | **N** | Nerve | Courage under pressure |
 
 Your dominant stats at the end determine which ending you receive.
+
+---
+
+## Claude Agent Workflows
+
+This project uses [Claude Code](https://claude.ai/code) as a developer agent for certain tasks. These are run manually by the developer — they are not part of the app itself.
+
+### Writing Tests
+
+The agent can generate unit and integration tests for any service or hook. To request tests, describe what you want covered:
+
+```
+Write tests for src/services/logger.js — cover startSession, logRequest, logResponse, logError, and downloadLogs. Mock the DOM for the download trigger.
+```
+
+### Git Change Summary
+
+Before committing, the agent can summarize what changed across all modified files and explain the reasoning:
+
+```
+Summarize the git changes since the last commit. What was changed and why?
+```
+
+### Commit Messages
+
+The agent can review staged changes and draft a conventional commit message:
+
+```
+Review my staged changes and suggest a commit message.
+```
+
+These workflows are run inside Claude Code (CLI or VS Code extension) with access to the full repository context.
+
+PS. This app is using Small Language Model so it might hallucinate a little bit.
