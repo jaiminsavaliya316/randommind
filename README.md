@@ -1,45 +1,13 @@
 # RandomMind
 
-An AI-powered interactive narrative game where your choices shape the story and your personality. Built with React + Vite, using the NVIDIA NIM API for scene generation.
 
----
+An AI-powered interactive narrative game where your choices shape the story and your personality. Built with React + Vite, using the NVIDIA NIM API for scene generation, Claude Code and it's Agents
 
-## Project Structure
 
-```
-randommind/
-├── public/                      ← Static assets
-├── src/
-│   ├── App.jsx                  ← Router: Home vs Game vs Ending
-│   ├── main.jsx                 ← React entry point
-│   ├── styles/
-│   │   └── styles.css           ← Global styles (dark theme)
-│   ├── data/
-│   │   ├── discs.js             ← Game library metadata (all cards)
-│   │   └── theCave.js           ← Story disc: scenes, choices, endings, config
-│   ├── components/
-│   │   ├── HomeScreen.jsx       ← Game library grid
-│   │   ├── GameScreen.jsx       ← Main gameplay container
-│   │   ├── ThoughtCloud.jsx     ← Choice clouds (2 pre-set + 1 custom input)
-│   │   ├── StatIcon.jsx         ← W/C/L/E/N stat icon with fill bar
-│   │   ├── LoadingScreen.jsx    ← Shown during AI generation
-│   │   ├── EndingScreen.jsx     ← Final ending display + personality recap
-│   │   ├── GameCard.jsx         ← Home screen game card
-│   │   └── Thumbnail.jsx        ← Game card thumbnail image
-│   ├── hooks/
-│   │   └── useGameState.js      ← Core state machine (stats, step, history)
-│   └── services/
-│       ├── aiService.js         ← NVIDIA NIM API calls + prompt building
-│       ├── statResolver.js      ← Resolves stat changes (AI or hardcoded fallback)
-│       └── logger.js            ← Session logger, downloads log file at game end
-├── .env                         ← API credentials (never commit this)
-├── .gitignore
-├── package.json
-├── vite.config.js
-└── eslint.config.js
-```
+ PS. This app is using Small Language Model so it might hallucinate a little bit.
 
----
+
+ If you want to know more please reachout: jaiminsavaliya317@gmail.com
 
 ## Setup
 
@@ -185,4 +153,13 @@ Review my staged changes and suggest a commit message.
 
 These workflows are run inside Claude Code (CLI or VS Code extension) with access to the full repository context.
 
-PS. This app is using Small Language Model so it might hallucinate a little bit.
+
+
+---
+
+## License
+![License: All Rights Reserved](https://img.shields.io/badge/license-All%20Rights%20Reserved-red)
+
+Copyright (c) 2026 Jaimin Savaliya. All Rights Reserved.
+
+Unauthorized copying, distribution, or use of this software, in whole or in part, is strictly prohibited without the express written permission of the author.
