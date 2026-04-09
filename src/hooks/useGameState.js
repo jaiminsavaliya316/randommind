@@ -12,6 +12,7 @@ const STAT_TO_ENDING = {
   luck: "survivor",
 };
 
+// Applies stat deltas from a choice to the current stats, clamping each value between 0 and 100
 function applyDeltas(currentStats, deltas) {
   const next = { ...currentStats };
   for (const [key, delta] of Object.entries(deltas)) {
@@ -22,6 +23,8 @@ function applyDeltas(currentStats, deltas) {
   return next;
 }
 
+// Determines which ending to show based on the highest stat at game end.
+// Breaks ties by scanning choice history in reverse to find the most recently changed tied stat.
 function resolveEndingKey(stats, choiceHistory) {
   const maxValue = Math.max(...Object.values(stats));
   const tied = Object.keys(stats).filter((k) => stats[k] === maxValue);
@@ -53,6 +56,8 @@ export function useGameState(story) {
     return () => clearTimeout(t);
   }, []);
 
+  // Handles a player's choice: calls the AI to resolve stat changes and the next scene,
+  // updates stats and history, and either advances to the next scene or triggers the ending
   const selectChoice = async (choiceText, choiceIndex) => {
     setIsLoading(true);
 
@@ -88,6 +93,7 @@ export function useGameState(story) {
     setIsLoading(false);
   };
 
+  // Resets all game state back to initial values and starts a new session
   const restartGame = () => {
     startSession();
     setStep(0);
