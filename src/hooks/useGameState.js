@@ -43,7 +43,7 @@ export function useGameState(story) {
   const [step, setStep] = useState(0);
   const [stats, setStats] = useState(INITIAL_STATS);
   const [choiceHistory, setChoiceHistory] = useState([]);
-  const [storySummary, setStorySummary] = useState(null);
+  const [storySummary, setStorySummary] = useState([]);
   const [gamePhase, setGamePhase] = useState("playing");
   const [isLoading, setIsLoading] = useState(true);
   const [endingKey, setEndingKey] = useState(null);
@@ -71,7 +71,12 @@ export function useGameState(story) {
       stats,
     });
 
-    if (newSummary) setStorySummary(newSummary);
+    if (newSummary) {
+      setStorySummary(prev => {
+        const next = [...prev, newSummary];
+        return next.length > 4 ? next.slice(1) : next;
+      });
+    }
 
     const nextStats = applyDeltas(stats, deltas);
     setStats(nextStats);
@@ -99,7 +104,7 @@ export function useGameState(story) {
     setStep(0);
     setStats(INITIAL_STATS);
     setChoiceHistory([]);
-    setStorySummary(null);
+    setStorySummary([]);
     setGamePhase("playing");
     setEndingKey(null);
     setCurrentScene(story.startScene);

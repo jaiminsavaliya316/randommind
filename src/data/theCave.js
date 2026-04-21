@@ -141,6 +141,7 @@ export const THE_CAVE = {
   config: {
     tone: "goofy alien mystery-thriller, non-violent",
     setting: "forest cave with quirky alien researchers",
+    theme: "A goofy, non-violent alien mystery-thriller set in a forest cave secretly used by alien researchers.",
     totalSteps: 9, // step 0 (start) + steps 1–8 (middle); ending triggers after step 8
 
     // Phase 4: included in every AI scene-generation system prompt

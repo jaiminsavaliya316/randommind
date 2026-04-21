@@ -22,7 +22,6 @@ export default function GameScreen({ discId, onBack }) {
 
   const [customExpanded, setCustomExpanded] = useState(false);
   const [customText, setCustomText] = useState("");
-  const [selectedCloudIndex, setSelectedCloudIndex] = useState(null);
 
   const statEntries = [
     ["W", stats.wit],
@@ -33,21 +32,12 @@ export default function GameScreen({ discId, onBack }) {
   ];
 
   const handleChoice = (choiceText, choiceIndex) => {
-    setSelectedCloudIndex(choiceIndex ?? "custom");
     setCustomExpanded(false);
     setCustomText("");
     selectChoice(choiceText, choiceIndex);
   };
 
-  const midGameLoading = isLoading && choiceHistory.length > 0;
-
-  const cloudAnimClass = (i) => {
-    if (!midGameLoading) return "";
-    return i === selectedCloudIndex ? "cloud--selected" : "cloud--exit";
-  };
-
-  // Full loading screen only on initial game entry (no choice made yet)
-  if (isLoading && choiceHistory.length === 0) return <LoadingScreen discTitle={story.config.title ?? discId} stats={statEntries} />;
+  if (isLoading) return <LoadingScreen discTitle={story.config.title ?? discId} stats={statEntries} />;
 
   if (gamePhase === "ending") {
     const ending = story.endings[endingKey];
@@ -80,7 +70,7 @@ export default function GameScreen({ discId, onBack }) {
       <div className="game__body">
         <div
           key={step}
-          className={`game__story-text ${midGameLoading ? "game__story-text--exiting" : ""}`}
+          className="game__story-text"
         >
           {currentScene.text}
         </div>
@@ -88,7 +78,7 @@ export default function GameScreen({ discId, onBack }) {
         {/* Thought Clouds */}
         <div
           key={`clouds-${step}`}
-          className={`game__clouds-row ${midGameLoading ? "game__clouds-row--exiting" : ""}`}
+          className="game__clouds-row"
         >
           {customExpanded ? (
             <div className="cloud__expanded-wide">
@@ -129,7 +119,6 @@ export default function GameScreen({ discId, onBack }) {
               {currentScene.choices.map((choice, i) => (
                 <div key={i} className="game__cloud-item">
                   <ThoughtCloud
-                    animClass={cloudAnimClass(i)}
                     onClick={() => handleChoice(choice, i)}
                   >
                     {choice}
@@ -139,7 +128,6 @@ export default function GameScreen({ discId, onBack }) {
               <div className="game__cloud-item">
                 <ThoughtCloud
                   isCustom
-                  animClass={cloudAnimClass("custom")}
                   onClick={() => setCustomExpanded(true)}
                 >
                   <span className="cloud__placeholder">
